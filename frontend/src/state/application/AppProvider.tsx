@@ -4,10 +4,9 @@ import { AppContextType } from "src/types/app-state.types";
 
 const initialAppState: AppContextType = {
   formData: {
-    clientName: "",
-    dateOfBirth: "",
-    mainLanguage: "",
-    secondaryLanguage: "",
+    name: "",
+    dob: "",
+    language: "",
     fundingSource: "",
   },
   onFormChange: () => {},
@@ -22,10 +21,9 @@ export const useAppContext = () => useContext<AppContextType>(AppContext);
 
 export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const [formData, setFormData] = useState({
-    clientName: "",
-    dateOfBirth: "",
-    mainLanguage: "",
-    secondaryLanguage: "",
+    name: "",
+    dob: "",
+    language: "",
     fundingSource: "",
   });
 

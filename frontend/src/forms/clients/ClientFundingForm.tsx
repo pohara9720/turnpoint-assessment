@@ -1,18 +1,32 @@
-import { Grid, Paper, TextInput } from "src/components";
+import { Grid, Paper, SelectInput, TextInput } from "src/components";
+import { useAppContext } from "src/state/application/AppProvider";
+import { FundingSource } from "src/types";
+
+const fundingOptions = Object.values(FundingSource)
 
 export function ClientFundingForm(): JSX.Element {
+  const { formData, onFormChange } = useAppContext();
+
+  const onChange = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.currentTarget;
+    onFormChange(name, value);
+  };
+
   return (
     <Paper>
       <Grid>
         <TextInput
           name="language"
           label="Primary Language"
-          onChange={(e) => console.log(e.target.value)}
+          onChange={onChange}
+          value={formData.language}
         />
-        <TextInput
+        <SelectInput
           name="fundingSource"
           label="Funding Source"
-          onChange={(e) => console.log(e.target.value)}
+          onChange={onChange}
+          value={formData.fundingSource}
+          options={fundingOptions}
         />
       </Grid>
     </Paper>

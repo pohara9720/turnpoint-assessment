@@ -2,10 +2,9 @@ import { Client } from "./client.types";
 
 export interface AppContextType {
   formData: {
-    clientName: string;
-    dateOfBirth: string;
-    mainLanguage: string;
-    secondaryLanguage: string;
+    name: string;
+    dob: string;
+    language: string;
     fundingSource: string;
   };
   onFormChange: (name: string, value: string) => void;

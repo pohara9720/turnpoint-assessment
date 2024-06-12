@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { Palette } from "../palette";
 
-type TextInputProps = {
+type SelectInputProps = {
   label: string;
   name: string;
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  onChange: (e: React.FormEvent<HTMLSelectElement>) => void;
   value: string;
-  type?: "text" | "date";
+  options: string[];
 };
 
-const InputComponent = styled.input`
+const SelectComponent = styled.select`
   background-color: ${Palette.White};
   padding: 4px;
   width: 100%;
   font-size: 14px;
-  height: 32px;
+  height: 100%;
   border-radius: 4px;
   border: solid 1px;
   border-color: ${Palette.Secondary};
@@ -27,10 +27,6 @@ const InputComponent = styled.input`
     background-color: ${Palette.White};
     border-color: ${Palette.Primary};
   }
-
-  &::placeholder {
-    color: ${Palette.Secondary};
-  }
 `;
 
 const Container = styled.div`
@@ -38,22 +34,23 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-export function TextInput({
+export function SelectInput({
   label,
   name,
   onChange,
   value,
-  type = "text",
-}: TextInputProps) {
+  options,
+}: SelectInputProps) {
   return (
     <Container>
       <label>{label}</label>
-      <InputComponent
-        name={name}
-        onChange={onChange}
-        value={value}
-        type={type}
-      />
+      <SelectComponent name={name} onChange={onChange} value={value}>
+        {["", ...options].map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </SelectComponent>
     </Container>
   );
 }

@@ -1,33 +1,38 @@
 import { NavLink } from "react-router-dom";
-import { Button, Grid } from "src/components";
+import { Button, Show } from "src/components";
 import { useAppContext } from "src/state/application/AppProvider";
 import styled from "styled-components";
+import { ClientCard } from "./ClientCard";
 
 const Container = styled.div`
   height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+`;
+
+const ListItem = styled.div`
+  margin: 8px;
+  width: 100%;
 `;
 
 export function ClientListPage(): JSX.Element {
-  const { clients } = useAppContext();
+  const { clients, deleteClient } = useAppContext();
   return (
-    <Container>
-      {clients?.map(({ name, dob, language, fundingSource, id }) => (
-        <Grid key={id}>
-          <div>{name}</div>
-          <div>{dob}</div>
-          <div>{language}</div>
-          <div>{fundingSource}</div>
-        </Grid>
-      ))}
-
+    <div>
       <NavLink to="/new-client">
-        <Button>New Client</Button>
+        <Button primary maxWidth={75}>
+          New Client
+        </Button>
       </NavLink>
-    </Container>
+      <Show when={!clients?.length}>
+        <h3>Please add a client.</h3>
+      </Show>
+      <Container>
+        {clients?.map((client) => (
+          <ListItem key={client.id}>
+            <ClientCard client={client} onDelete={deleteClient} />
+          </ListItem>
+        ))}
+      </Container>
+    </div>
   );
 }
