@@ -6,10 +6,21 @@ export enum FundingSource {
   HACC = "HACC",
 }
 
-export type Client = {
-  id: string;
+export enum Language {
+  English = "English",
+  Spanish = "Spanish",
+  French = "French",
+  German = "German",
+  Chinese = "Chinese",
+}
+
+export interface ClientPayload {
   name: string;
   dob: string;
-  language: string;
+  language: Language;
   fundingSource: FundingSource;
-};
+}
+
+export interface Client extends ClientPayload {
+  id: string;
+}

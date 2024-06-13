@@ -1,8 +1,5 @@
 export type WizardProps = {
-  children?: [JSX.Element] | JSX.Element;
-  headerBreakpoint: number;
-  progressStepsWidth: number;
-  showHeader?: boolean;
+  children?: JSX.Element[];
   error?: boolean;
 };
 
@@ -16,4 +13,10 @@ export type StepProps = {
   last?: boolean;
   title?: string;
   onLast?: () => void;
+};
+
+export type WizardHeaderProps = {
+  title: string;
+  active: number;
+  steps: JSX.Element[];
 };

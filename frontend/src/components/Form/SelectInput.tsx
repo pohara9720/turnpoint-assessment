@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Palette } from "../palette";
+import { Show } from "../Show";
 
 type SelectInputProps = {
   label: string;
@@ -7,14 +8,21 @@ type SelectInputProps = {
   onChange: (e: React.FormEvent<HTMLSelectElement>) => void;
   value: string;
   options: string[];
+  error?: string;
 };
+
+const ErrorText = styled.div`
+  margin-top: 4px;
+  color: ${Palette.Error};
+  font-weight: bold;
+`;
 
 const SelectComponent = styled.select`
   background-color: ${Palette.White};
   padding: 4px;
   width: 100%;
   font-size: 14px;
-  height: 100%;
+  height: 40px;
   border-radius: 4px;
   border: solid 1px;
   border-color: ${Palette.Secondary};
@@ -40,6 +48,7 @@ export function SelectInput({
   onChange,
   value,
   options,
+  error,
 }: SelectInputProps) {
   return (
     <Container>
@@ -51,6 +60,9 @@ export function SelectInput({
           </option>
         ))}
       </SelectComponent>
+      <Show when={Boolean(error)}>
+        <ErrorText>{error}</ErrorText>
+      </Show>
     </Container>
   );
 }

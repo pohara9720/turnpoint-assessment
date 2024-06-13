@@ -3,6 +3,7 @@ import { Button, Show } from "src/components";
 import { useAppContext } from "src/state/application/AppProvider";
 import styled from "styled-components";
 import { ClientCard } from "./ClientCard";
+import { useEffect } from "react";
 
 const Container = styled.div`
   height: 100%;
@@ -11,13 +12,17 @@ const Container = styled.div`
 
 const ListItem = styled.div`
   margin: 8px;
-  width: 100%;
 `;
 
 export function ClientListPage(): JSX.Element {
-  const { clients, deleteClient } = useAppContext();
+  const { clients, deleteClient, getClients } = useAppContext();
+
+  useEffect(() => {
+    getClients();
+  }, []);
+
   return (
-    <div>
+    <Container>
       <NavLink to="/new-client">
         <Button primary maxWidth={75}>
           New Client
@@ -33,6 +38,6 @@ export function ClientListPage(): JSX.Element {
           </ListItem>
         ))}
       </Container>
-    </div>
+    </Container>
   );
 }

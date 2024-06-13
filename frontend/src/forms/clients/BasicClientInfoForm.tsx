@@ -2,7 +2,7 @@ import { Grid, Paper, TextInput } from "src/components";
 import { useAppContext } from "src/state/application/AppProvider";
 
 export function BasicClientInfoForm(): JSX.Element {
-  const { formData, onFormChange } = useAppContext();
+  const { formData, onFormChange, fieldHasError } = useAppContext();
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -17,6 +17,7 @@ export function BasicClientInfoForm(): JSX.Element {
           label="Client Name"
           onChange={onChange}
           value={formData.name}
+          error={fieldHasError("name")}
         />
         <TextInput
           name="dob"
@@ -24,6 +25,7 @@ export function BasicClientInfoForm(): JSX.Element {
           onChange={onChange}
           value={formData.dob}
           type="date"
+          error={fieldHasError("dob")}
         />
       </Grid>
     </Paper>

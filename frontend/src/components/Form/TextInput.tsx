@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Palette } from "../palette";
+import { Show } from "../Show";
 
 type TextInputProps = {
   label: string;
@@ -7,7 +8,14 @@ type TextInputProps = {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   value: string;
   type?: "text" | "date";
+  error?: string;
 };
+
+const ErrorText = styled.div`
+  margin-top: 4px;
+  color: ${Palette.Error};
+  font-weight: bold;
+`;
 
 const InputComponent = styled.input`
   background-color: ${Palette.White};
@@ -44,6 +52,7 @@ export function TextInput({
   onChange,
   value,
   type = "text",
+  error,
 }: TextInputProps) {
   return (
     <Container>
@@ -54,6 +63,9 @@ export function TextInput({
         value={value}
         type={type}
       />
+      <Show when={Boolean(error)}>
+        <ErrorText>{error}</ErrorText>
+      </Show>
     </Container>
   );
 }
