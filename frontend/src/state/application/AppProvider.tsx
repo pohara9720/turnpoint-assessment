@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useCallback } from "react";
 import { useApi } from "src/api";
 import { Client, FormErrors, HttpMethod } from "src/types";
 import { AppContextType } from "src/types/app-state.types";
@@ -14,15 +14,14 @@ const initialAppState: AppContextType = {
   setFormErrors: () => {},
   formErrors: null,
   clients: [],
-  addClient: () => {},
-  deleteClient: () => {},
-  getClients: () => {},
-  fieldHasError: (name: keyof FormErrors) => undefined,
+  addClient: async () => {},
+  deleteClient: async () => {},
+  getClients: async () => {},
+  resetForm: () => {},
+  fieldHasError: () => undefined,
 };
 
-const AppContext = createContext(initialAppState);
-
-export const useAppContext = () => useContext<AppContextType>(AppContext);
+export const AppContext = createContext(initialAppState);
 
 export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const [formData, setFormData] = useState({
@@ -35,52 +34,66 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const { makeRequest } = useApi();
   const [clients, setClients] = useState<Client[]>([]);
 
-  const onFormChange = (name: string, value: string) => {
+  const onFormChange = useCallback((name: string, value: string) => {
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-  };
+  }, []);
 
-  const fieldHasError = (name: keyof FormErrors) => {
-    if (formErrors) {
-      return formErrors[name!];
-    }
-    return undefined;
-  };
+  const resetForm = useCallback(() => {
+    setFormData(initialAppState.formData);
+  }, []);
 
-  const addClient = async (client: Client) => {
-    try {
-      const newClient = (await makeRequest(
-        "clients",
-        HttpMethod.POST,
-        client
-      )) as Client;
-      setClients((prevClients) => [...prevClients, newClient]);
-    } catch (error) {
-      throw new Error(`Error creating client ${JSON.stringify(error)}`);
-    }
-  };
+  const fieldHasError = useCallback(
+    (name: keyof FormErrors) => {
+      if (formErrors) {
+        return formErrors[name!];
+      }
+      return undefined;
+    },
+    [formErrors]
+  );
 
-  const deleteClient = async (clientId: string) => {
-    try {
-      await makeRequest(`clients/${clientId}`, HttpMethod.DELETE);
-      setClients((prevClients) =>
-        prevClients.filter((client) => client.id !== clientId)
-      );
-    } catch (error) {
-      throw new Error(`Error deleting client ${JSON.stringify(error)}`);
-    }
-  };
+  const addClient = useCallback(
+    async (client: Client) => {
+      try {
+        const newClient = (await makeRequest(
+          "clients",
+          HttpMethod.POST,
+          client
+        )) as Client;
+        setClients((prevClients) => [...prevClients, newClient]);
+      } catch (error) {
+        throw new Error(`Error creating client ${JSON.stringify(error)}`);
+      }
+    },
+    [makeRequest]
+  );
 
-  const getClients = async () => {
+  const deleteClient = useCallback(
+    async (clientId: string) => {
+      try {
+        await makeRequest(`clients/${clientId}`, HttpMethod.DELETE);
+        setClients((prevClients) =>
+          prevClients.filter((client) => client.id !== clientId)
+        );
+      } catch (error) {
+        throw new Error(`Error deleting client ${JSON.stringify(error)}`);
+      }
+    },
+    [makeRequest]
+  );
+
+  const getClients = useCallback(async () => {
     try {
       const clients = await makeRequest("clients");
       setClients(clients as Client[]);
     } catch (error) {
       throw new Error(`Error getting clients ${JSON.stringify(error)}`);
     }
-  };
+  }, [makeRequest]);
+
   return (
     <AppContext.Provider
       value={{
@@ -93,6 +106,7 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
         setFormErrors,
         fieldHasError,
         getClients,
+        resetForm,
       }}
     >
       {children}

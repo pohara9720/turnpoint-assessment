@@ -39,7 +39,7 @@ export function ClientCard({
         </div>
       </Grid>
       <Divider />
-      <Button primary onClick={() => onDelete(id)} maxWidth={100}>
+      <Button $primary onClick={() => onDelete(id)} $fixedWidth={100}>
         Delete Client
       </Button>
     </Paper>

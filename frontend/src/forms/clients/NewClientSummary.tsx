@@ -1,5 +1,5 @@
 import { Grid, Paper } from "src/components";
-import { useAppContext } from "src/state/application/AppProvider";
+import { useAppContext } from "src/state";
 
 export function NewClientSummary(): JSX.Element {
   const { formData } = useAppContext();

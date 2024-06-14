@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Button, Show } from "src/components";
-import { useAppContext } from "src/state/application/AppProvider";
+import { useAppContext } from "src/state";
 import styled from "styled-components";
 import { ClientCard } from "./ClientCard";
 import { useEffect } from "react";
@@ -19,12 +19,12 @@ export function ClientListPage(): JSX.Element {
 
   useEffect(() => {
     getClients();
-  }, []);
+  }, [getClients]);
 
   return (
     <Container>
       <NavLink to="/new-client">
-        <Button primary maxWidth={75}>
+        <Button $primary $fixedWidth={75}>
           New Client
         </Button>
       </NavLink>

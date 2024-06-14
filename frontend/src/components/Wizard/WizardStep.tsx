@@ -18,14 +18,14 @@ export const WizardStep = ({
     <div>
       {children}
       <WizardButtons>
-        <Button onClick={wizard?.prev}>Prev</Button>
+        <Button onClick={wizard?.prev} data-testid="wizard-prev" >Prev</Button>
         {!last && (
-          <Button primary onClick={wizard?.next}>
+          <Button $primary onClick={wizard?.next} data-testid="wizard-next" >
             Next
           </Button>
         )}
         {last && (
-          <Button onClick={onLast} primary>
+          <Button onClick={onLast} $primary>
             Submit
           </Button>
         )}

@@ -1,6 +1,6 @@
 import { HttpMethod } from "src/types/api.types";
 
-// TODO move this to env
+// NOTE This would typically be in an env variable.
 const BASE_URL = "http://localhost:3000";
 
 
@@ -8,7 +8,7 @@ const BASE_URL = "http://localhost:3000";
 async function request<T>(
   endpoint: string,
   method: HttpMethod = HttpMethod.GET,
-  body?: any
+   body?: T
 ): Promise<T> {
   const url = `${BASE_URL}/${endpoint}`;
   const options: RequestInit = {

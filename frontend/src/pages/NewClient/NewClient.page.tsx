@@ -6,7 +6,7 @@ import {
   NewClientSummary,
   validateFormData,
 } from "src/forms";
-import { useAppContext } from "src/state/application/AppProvider";
+import { useAppContext } from "src/state";
 import { Client } from "src/types";
 import styled from "styled-components";
 const Container = styled.div`
@@ -14,7 +14,8 @@ const Container = styled.div`
 `;
 
 export function NewClientPage(): JSX.Element {
-  const { formData, addClient, setFormErrors, formErrors } = useAppContext();
+  const { formData, addClient, setFormErrors, formErrors, resetForm } =
+    useAppContext();
   const navigate = useNavigate();
 
   const onSubmit = async () => {
@@ -24,6 +25,7 @@ export function NewClientPage(): JSX.Element {
       return;
     }
     addClient(formData as Client);
+    resetForm();
     navigate("/");
   };
 

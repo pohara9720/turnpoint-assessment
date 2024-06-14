@@ -1,6 +1,5 @@
 import { WizardHeaderProps } from "src/types";
 import styled, { css } from "styled-components";
-import { switchProp } from "styled-tools";
 import { Palette } from "../palette";
 
 const ProgressContainer = styled.div`
@@ -33,17 +32,21 @@ const ProgressStep = styled.div<{ state: string }>`
       right: 0;
       height: 2px;
 
-      ${switchProp("state", {
-        active: css`
+      ${({ state }) =>
+        state === "active" &&
+        css`
           background: ${Palette.Secondary};
-        `,
-        past: css`
+        `}
+      ${({ state }) =>
+        state === "past" &&
+        css`
           background-color: ${Palette.Primary};
-        `,
-        future: css`
+        `}
+      ${({ state }) =>
+        state === "future" &&
+        css`
           background: ${Palette.Secondary};
-        `,
-      })};
+        `}
     }
   }
 `;
@@ -54,25 +57,29 @@ const ProgressStepIndicator = styled.div<{ state: string }>`
   flex: 1 0 auto;
   border-radius: 50%;
   border: solid 2px;
-  ${switchProp("state", {
-    active: css`
+  ${({ state }) =>
+    state === "active" &&
+    css`
       border-color: ${Palette.Primary};
-    `,
-    past: css`
+    `}
+  ${({ state }) =>
+    state === "past" &&
+    css`
       border-color: ${Palette.Primary};
       background-color: ${Palette.Primary};
-    `,
-    future: css`
+    `}
+  ${({ state }) =>
+    state === "future" &&
+    css`
       border-color: ${Palette.Secondary};
-    `,
-  })};
+    `}
 `;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  @media {
+  @media (min-width: 600px) {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -91,6 +98,7 @@ const calculateState = (active: number, index: number) => {
   }
   return active > index ? "past" : "future";
 };
+
 export function WizardHeader({
   title,
   active,
@@ -101,7 +109,7 @@ export function WizardHeader({
       <StepTitle>{title}</StepTitle>
       <ProgressContainer>
         <ProgressSteps>
-          {steps.map((value: JSX.Element, index: number): JSX.Element => {
+          {steps.map((_value: JSX.Element, index: number): JSX.Element => {
             const state = calculateState(active, index);
             return (
               <ProgressStep key={index} state={state}>

@@ -1,5 +1,5 @@
 import { Grid, Paper, TextInput } from "src/components";
-import { useAppContext } from "src/state/application/AppProvider";
+import { useAppContext } from "src/state";
 
 export function BasicClientInfoForm(): JSX.Element {
   const { formData, onFormChange, fieldHasError } = useAppContext();

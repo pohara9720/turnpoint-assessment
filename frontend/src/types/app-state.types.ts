@@ -13,7 +13,8 @@ export interface AppContextType {
   fieldHasError: (name: keyof FormErrors) => string | undefined;
   onFormChange: (name: string, value: string) => void;
   clients: Client[];
-  addClient: (client: Client) => void;
-  deleteClient: (clientId: string) => void;
+  addClient: (client: Client) => Promise<void>;
+  deleteClient: (clientId: string) => Promise<void>;
   getClients: () => Promise<void>;
+  resetForm: () => void;
 }
