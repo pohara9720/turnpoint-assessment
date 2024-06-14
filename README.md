@@ -59,6 +59,11 @@ This project is a simple CRUD application for managing clients, with a Node.js a
    npm run dev
    ```
 
+7. Run tests in each respective directory
+
+`npm run test`
+
+
 ## Usage
 
 The backend API will be running on `http://localhost:3000` and the frontend on `http://localhost:5173`.
@@ -69,3 +74,4 @@ As asked I have added the Wizard functionality with a simple list as the landing
 
 I tried to keep styling basic as usually aesthetic designs are left up to the designer. 
 
+I tried to keep packages down to a minimum so things like form validation, form handling, and state management I implmeneted without a library.

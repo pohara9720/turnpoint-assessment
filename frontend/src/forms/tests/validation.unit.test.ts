@@ -1,4 +1,4 @@
-import { validateFormData } from "../util";
+import { validateFormData } from "src/forms";
 import { Client, FundingSource, Language } from "src/types";
 import { describe, expect, it } from "vitest";
 
