@@ -1,6 +1,6 @@
 import { app } from "../index";
 import { Client } from "../models/Client";
-const request = require("supertest")
+const request = require("supertest");
 
 jest.mock("../models/Client", () => ({
   Client: {
@@ -26,18 +26,32 @@ describe("Client Controller", () => {
     expect(response.body[1].name).toBe("Client B");
   });
   it("POST - should create a new client", async () => {
-    const newClient = { name: "New Client" };
+    const incompleteClient = { name: "New Client" };
+    const badResponse = await request(app)
+      .post("/clients")
+      .send(incompleteClient)
+      .set("Accept", "application/json");
 
+    expect(badResponse.status).toBe(400);
+
+    expect(Client.create).toHaveBeenCalledTimes(0);
+
+    const completeClient = {
+      name: "New Client",
+      dob: "1990-01-01",
+      fundingSource: "NDIS",
+      language: "English",
+    };
     const response = await request(app)
       .post("/clients")
-      .send(newClient)
+      .send(completeClient)
       .set("Accept", "application/json");
 
     expect(response.status).toBe(201);
     expect(response.body.id).toBeDefined();
     expect(response.body.name).toBe("New Client");
 
-    expect(Client.create).toHaveBeenCalledWith(newClient);
+    expect(Client.create).toHaveBeenCalledWith(completeClient);
   });
   it("PUT - should update an existing client", async () => {
     const updatedClient = { name: "Updated Client" };

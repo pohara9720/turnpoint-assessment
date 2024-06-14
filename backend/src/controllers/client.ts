@@ -1,21 +1,28 @@
-import { Request, Response } from 'express';
-import { Client } from '../models/Client';
+import { Request, Response } from "express";
+import { Client } from "../models/Client";
+import { validate } from "../util/validate-data";
 
 export const getClients = async (req: Request, res: Response) => {
   try {
     const clients = await Client.findAll();
     res.json(clients);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve clients' });
+    res.status(500).json({ error: "Failed to retrieve clients" });
   }
 };
 
 export const createClient = async (req: Request, res: Response) => {
+  const data = req.body;
+  const errors = validate(data);
+
+  if (errors) {
+    return res.status(400).json(errors);
+  }
   try {
     const client = await Client.create(req.body);
     res.status(201).json(client);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create client' });
+    res.status(500).json({ error: "Failed to create client" });
   }
 };
 
@@ -27,10 +34,10 @@ export const updateClient = async (req: Request, res: Response) => {
       const updatedClient = await Client.findOne({ where: { id } });
       res.status(200).json(updatedClient);
     } else {
-      throw new Error('Client not found');
+      throw new Error("Client not found");
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update client' });
+    res.status(500).json({ error: "Failed to update client" });
   }
 };
 
@@ -41,9 +48,9 @@ export const deleteClient = async (req: Request, res: Response) => {
     if (deleted) {
       res.status(204).json();
     } else {
-      throw new Error('Client not found');
+      throw new Error("Client not found");
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete client' });
+    res.status(500).json({ error: "Failed to delete client" });
   }
 };
